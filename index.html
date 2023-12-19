@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rock, Paper, Snip</title>
+  </head>
+  <body>
+    <script>
+      var arr = ["rock", "paper", "scissors"];
+      let getComputerNumber = arr[Math.floor(Math.random() * arr.length)];
+
+      /*let getPlayerInput = prompt("RPS?", "rock");*/
+      const playerInput = "rock";
+
+      /*const playerSelection = getPlayerInput.toLowerCase();*/
+      const playerSelection = playerInput.toLowerCase();
+      const computerSelection = getComputerNumber.toLowerCase();
+      console.log(playerSelection);
+      console.log(computerSelection);
+      /*GAME LOOP
+make sure playerScore and computerScore are < 5.
+if payerScore = 5, return Player Takes All
+if computerScore = 5 return Computer Takes All
+play game
+if "Player Wins" then playerScore++
+if "Computer Wins" then computerScore++
+repeat
+*/
+
+      function playRound(playerSelection, computerSelection) {
+        if (playerSelection === computerSelection) {
+          return "Draw!";
+        } else if (playerSelection === "rock") {
+          if (computerSelection === "scissors") {
+            return "Player Wins";
+          } else {
+            return "Computer Wins";
+          }
+        } else if (playerSelection === "scissors") {
+          if (computerSelection === "rock") {
+            return "Player Wins";
+          } else {
+            return "Computer Wins";
+          }
+        } else if (playerSelection === "paper") {
+          if (computerSelection === "rock") {
+            return "Player Wins";
+          } else {
+            return "Computer Wins";
+          }
+        }
+        
+      }
+      
+    console.log(playRound(playerSelection, computerSelection));
+
+    </script>
+  </body>
+</html>
