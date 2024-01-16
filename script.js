@@ -22,8 +22,7 @@ function game() {
     console.log("Player: " + playerSelection);
     console.log("Computer: " + computerSelection);
     console.log(playRound(playerSelection, computerSelection));
-    console.log("Player Win Totals " + playerScore);
-    console.log("Computer Win Totals " + computerScore);
+    console.log("SCORE: Player: " + playerScore + " Comp: " + computerScore);
   
 
 
@@ -70,4 +69,4 @@ function game() {
 
 }
 
-console.log(game());
+console.log("After Five Rounds, " + game());
