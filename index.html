@@ -4,139 +4,127 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--<script type = "text/javascript" src="script.js"></script>-->
+    <link rel="stylesheet" href="stylesheet.css" />
     <title>Rock, Paper, Snip!</title>
   </head>
   <body>
+    <div class="selection" id="playerSelection"></div>
+    <div class="selection" id="computerSeletion"></div>
+    <div class="score" id="playerScoreboard">Player: 0</div>
+    <div class="score" id="computerScoreboard">Computer: 0</div>
     <div class="winner"></div>
+    <div class="end"></div>
 
     <button class="button rock">ROCK</button>
     <button class="button paper">PAPER</button>
     <button class="button scissors">SCISSORS</button>
 
     <script>
-      function computerSelect() {
+      let playerScore = 0;
+      let computerScore = 0;
+      let roundWinner = "";
+
+      function randomSelection() {
         const arr = ["rock", "paper", "scissors"];
-        let getComputerNumber = arr[Math.floor(Math.random() * arr.length)];
-        return getComputerNumber.toLowerCase();
+        let getNumber = arr[Math.floor(Math.random() * arr.length)];
+        return getNumber.toLowerCase();
       }
 
-      /*const computerSelection = computerSelect();
-      /*const playerSelection = prompt("Rock, Paper, Scissors?").toLowerCase();*/
-      /*const playerSelection = "rock";*/
-
       function playRound(playerSelection, computerSelection) {
-        let playerScore = 0;
-        let computerScore = 0;
-
         if (playerSelection === computerSelection) {
-          return "Draw!";
+          roundWinner = "Draw!";
         } else if (playerSelection === "rock") {
           if (computerSelection === "scissors") {
             playerScore++;
-            return "Player Wins";
+            roundWinner = "Player Wins";
           } else {
             computerScore++;
-            return "Computer Wins";
+            roundWinner = "Computer Wins";
           }
         } else if (playerSelection === "scissors") {
           if (computerSelection === "paper") {
             playerScore++;
-            return "Player Wins";
+            roundWinner = "Player Wins";
           } else {
             computerScore++;
-            return "Computer Wins";
+            roundWinner = "Computer Wins";
           }
         } else if (playerSelection === "paper") {
           if (computerSelection === "rock") {
             playerScore++;
-            return "Player Wins";
+            roundWinner = "Player Wins";
           } else {
             computerScore++;
-            return "Computer Wins";
+            roundWinner = "Computer Wins";
           }
         }
-
-        /*if (playerScore > computerScore) {
-          return "Player Wins It All!";
-        } else if (playerScore < computerScore) {
-          return "Computer Wins It All!";
-        } else {
-          return "It's a Draw!";
-        }*/
       }
-
-      /*console.log("Player: " + playerSelection);
-      console.log("Computer: " + computerSelection);
-      /*console.log(playRound(playerSelection, computerSelection));
-      /*console.log("SCORE: Player: " + playerScore + " Comp: " + computerScore);*/
-
-      /*console.log("After Five Rounds, " + game());*/
 
       let rock = document.querySelector(".rock");
       let paper = document.querySelector(".paper");
       let scissors = document.querySelector(".scissors");
       let butt = document.querySelectorAll("button");
-      let divwin = document.querySelector("div");
+      let divwin = document.querySelector(".winner");
+      let divEnd = document.querySelector(".end");
+      let playerChoice = document.querySelector("playerSelection");
+      let computerChoice = document.querySelector("computerSelection");
+      let playerScoreboard = document.querySelector("playerScore");
+      let computerScoreboard = document.querySelector("computerScore");
 
-
-     /* butt.forEach(but =>{
-        but.addEventListener('click', () => {
-          if (document.contains(document.querySelector("p"))){
-          document.querySelector("p").remove();
-        })
-      });
-*/
-
-      rock.addEventListener('click', () => {
-        if (document.contains(document.querySelector("p"))){
-          document.querySelector("p").remove();
+      function whenClicked(playerSelection) {
+        if (playerScore === 5 || computerScore === 5) {
+          endGame(playerScore, computerScore);
+          return;
         }
-        let playerSelection = "rock";
-        let computerSelection = computerSelect();
-        let results = document.createElement("p");
-        results.textContent = "rock";
-        divwin.appendChild(results);
+        let computerSelection = randomSelection();
+        playRound(playerSelection, computerSelection);
+        updateScores(playerScore, computerScore);
+        updateSelections(playerSelection, computerSelection);
+        updateRound(roundWinner);
+      }
 
+      function updateSelections(playerSelection, computerSelection) {
+        console.log(playerSelection);
+        console.log(computerSelection);
+      }
 
-        console.log("Player: rock");
-        console.log("Computer: " + computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
+      function updateScores(playerScore, computerScore) {
+        /*playerScoreboard.textContent = "Player: " + playerScore;*/
+        console.log(playerScore);
+        console.log(computerScore);
+      }
 
-      });
+      function updateRound(roundWinner) {
+        divwin.textContent = roundWinner;
+      }
 
-
-      paper.addEventListener('click', () => {
-        if (document.contains(document.querySelector("p"))){
-          document.querySelector("p").remove();
+      function endGame(playerScore, computerScore) {
+        if (playerScore === 5) {
+          divEnd.textContent = "Player Wins All";
+        } else if (computerScore === 5) {
+          divEnd.textContent = "Computer Wins All";
         }
-        let playerSelection = "paper";
-        let computerSelection = computerSelect();
-        let results = document.createElement("p");
-        results.textContent = "paper";
-        divwin.appendChild(results);
+        let resetButt = document.createElement("button");
+        resetButt.textContent = "Play Again!";
+        divEnd.appendChild(resetButt);
 
+        resetButt.addEventListener("click", () => {
+          resetGame();
+        });
+      }
 
+      function resetGame() {
+        alert("reset");
+      }
 
-        console.log("Player: paper");
-        console.log("Computer: " + computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
+      rock.addEventListener("click", () => {
+        whenClicked("rock");
       });
-
-
-      scissors.addEventListener('click', () => {
-        if (document.contains(document.querySelector("p"))){
-          document.querySelector("p").remove();
-        }
-        let playerSelection = "scissors";
-        let computerSelection = computerSelect();
-        let results = document.createElement("p");
-        results.textContent = "scissors";
-        divwin.appendChild(results);
-
-
-        console.log("Player: scissors");
-        console.log("Computer: " + computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
+      paper.addEventListener("click", () => {
+        whenClicked("paper");
+      });
+      scissors.addEventListener("click", () => {
+        whenClicked("scissors");
       });
     </script>
   </body>

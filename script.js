@@ -40,7 +40,7 @@ function game() {
         return "Computer Wins";
       }
     } else if (playerSelection === "scissors") {
-      if (computerSelection === "rock") {
+      if (computerSelection === "paper") {
         playerScore++;
         return "Player Wins";
       } else {
