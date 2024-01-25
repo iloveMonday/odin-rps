@@ -8,16 +8,21 @@
     <title>Rock, Paper, Snip!</title>
   </head>
   <body>
-    <div class="selection" id="playerSelection"></div>
-    <div class="selection" id="computerSeletion"></div>
+    <div class="score" id="scoreboard">SCORE
     <div class="score" id="playerScoreboard">Player: 0</div>
-    <div class="score" id="computerScoreboard">Computer: 0</div>
-    <div class="winner"></div>
-    <div class="end"></div>
-
+    <div class="score" id="computerScoreboard">Comp: 0</div>
+    </div>
+    <div class="selection" id="selections">SELECTIONS
+    <div class="selection" id="playerSelection">Player: </div>
+    <div class="selection" id="computerSelection">Comp: </div>
+    </div>
+    <div class="winner">Click to Begin!</div>
+    
     <button class="button rock">ROCK</button>
     <button class="button paper">PAPER</button>
     <button class="button scissors">SCISSORS</button>
+
+    <div class="end"></div>
 
     <script>
       let playerScore = 0;
@@ -64,12 +69,12 @@
       let paper = document.querySelector(".paper");
       let scissors = document.querySelector(".scissors");
       let butt = document.querySelectorAll("button");
-      let divwin = document.querySelector(".winner");
+      let divWin = document.querySelector(".winner");
       let divEnd = document.querySelector(".end");
-      let playerChoice = document.querySelector("playerSelection");
-      let computerChoice = document.querySelector("computerSelection");
-      let playerScoreboard = document.querySelector("playerScore");
-      let computerScoreboard = document.querySelector("computerScore");
+      let playerChoice = document.querySelector("#playerSelection");
+      let computerChoice = document.querySelector("#computerSelection");
+      let playerScoreboard = document.querySelector("#playerScoreboard");
+      let computerScoreboard = document.querySelector("#computerScoreboard");
 
       function whenClicked(playerSelection) {
         if (playerScore === 5 || computerScore === 5) {
@@ -84,18 +89,17 @@
       }
 
       function updateSelections(playerSelection, computerSelection) {
-        console.log(playerSelection);
-        console.log(computerSelection);
+        playerChoice.textContent = "Player: " + playerSelection;
+        computerChoice.textContent = "Comp: " + computerSelection;
       }
 
       function updateScores(playerScore, computerScore) {
-        /*playerScoreboard.textContent = "Player: " + playerScore;*/
-        console.log(playerScore);
-        console.log(computerScore);
+        playerScoreboard.textContent = "Player: " + playerScore;
+        computerScoreboard.textContent = "Comp: " + computerScore;
       }
 
       function updateRound(roundWinner) {
-        divwin.textContent = roundWinner;
+        divWin.textContent = roundWinner;
       }
 
       function endGame(playerScore, computerScore) {
@@ -114,7 +118,13 @@
       }
 
       function resetGame() {
-        alert("reset");
+        divEnd.remove();        
+        playerScore = 0;
+        computerScore = 0;
+        playerScoreboard.textContent = "Player: 0";
+        computerScoreboard.textContent = "Comp: 0";
+        playerChoice.textContent = "Player: ";
+        computerChoice.textContent = "Comp: ";
       }
 
       rock.addEventListener("click", () => {
