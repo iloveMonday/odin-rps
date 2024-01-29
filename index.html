@@ -3,10 +3,180 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type = "text/javascript" src="script.js"></script>
-    <title>rock, Paper, Snip</title>
+    <!--<script type = "text/javascript" src="script.js"></script>-->
+    <link rel="stylesheet" href="stylesheet.css" />
+    <title>Rock, Paper, Snip!</title>
   </head>
   <body>
+    <div class="board">
+      <div class="player">
+        <div class="score" id="playerScoreboard">0</div>
+        <div class="name" id="namePlayer">PLAYER</div>
+        <div class="selection" id="playerSelection"></div>
+      </div>
 
+      <div class="computer">
+        <div class="score" id="computerScoreboard">0</div>
+        <div class="name" id="nameComputer">COMPUTER</div>
+        <div class="selection" id="computerSelection"></div>
+      </div>
+    </div>
+
+    <div class="winner">CLICK TO BEGIN</div>
+    <div class="roundCount">ROUNDS PLAYED: 0</div>
+
+    <div class="button-box">
+      <img src="./img/rps_rock.jpg" class="button rock" alt="rock">
+      <img src="./img/rps_paper.jpg" class="button paper" alt="paper">
+      <img src="./img/rps_scissors.jpg" class="button scissors" alt="scissors">
+    </div>
+
+    <div class="end"></div>
+
+    <script>
+      let playerScore = 0;
+      let computerScore = 0;
+      let roundsPlayed = 0
+      let roundWinner = "";
+
+      function randomSelection() {
+        const arr = ["rock", "paper", "scissors"];
+        let getNumber = arr[Math.floor(Math.random() * arr.length)];
+        return getNumber.toLowerCase();
+      }
+
+      function playRound(playerSelection, computerSelection) {
+        if (playerSelection === computerSelection) {
+          roundWinner = "DRAW!";
+        } else if (playerSelection === "rock") {
+          if (computerSelection === "scissors") {
+            playerScore++;
+            roundWinner = "PLAYER WINS";
+          } else {
+            computerScore++;
+            roundWinner = "COMPUTER WINS";
+          }
+        } else if (playerSelection === "scissors") {
+          if (computerSelection === "paper") {
+            playerScore++;
+            roundWinner = "PLAYER WINS";
+          } else {
+            computerScore++;
+            roundWinner = "COMPUTER WINS";
+          }
+        } else if (playerSelection === "paper") {
+          if (computerSelection === "rock") {
+            playerScore++;
+            roundWinner = "PLAYER WINS";
+          } else {
+            computerScore++;
+            roundWinner = "COMPUTER WINS";
+          }
+        }
+        roundsPlayed++;
+      }
+
+      let rock = document.querySelector(".rock");
+      let paper = document.querySelector(".paper");
+      let scissors = document.querySelector(".scissors");
+      let butt = document.querySelectorAll("button");
+      let divWin = document.querySelector(".winner");
+      let divEnd = document.querySelector(".end");
+      let playerChoice = document.querySelector("#playerSelection");
+      let computerChoice = document.querySelector("#computerSelection");
+      let playerScoreboard = document.querySelector("#playerScoreboard");
+      let computerScoreboard = document.querySelector("#computerScoreboard");
+      let roundCounter = document.querySelector(".roundCount");
+
+      /*let picRock = document.createElement("img");
+      picRock.src = "./img/rps_rock.jpg";*/
+
+      function whenClicked(playerSelection) {
+        if (playerScore === 5 || computerScore === 5) {
+          return;
+        }
+        let computerSelection = randomSelection();
+        playRound(playerSelection, computerSelection);
+        updateScores(playerScore, computerScore);
+        updateSelections(playerSelection, computerSelection);
+        updateRound(roundWinner, roundsPlayed);
+      }
+
+      function updateSelections(playerSelection, computerSelection) {
+        switch (playerSelection) {
+          case "rock":
+            playerChoice.textContent = "ROCK"
+            break;
+          case "paper":
+            playerChoice.textContent = "PAPER";
+            break;
+          case "scissors":
+            playerChoice.textContent = "SCISSORS";
+            break;
+        }
+
+        switch (computerSelection) {
+          case "rock":
+            computerChoice.textContent = "ROCK";
+            break;
+          case "paper":
+            computerChoice.textContent = "PAPER";
+            break;
+          case "scissors":
+            computerChoice.textContent = "SCISSORS";
+            break;
+        }
+      }
+
+      function updateScores(playerScore, computerScore) {        
+        playerScoreboard.textContent = playerScore;
+        computerScoreboard.textContent = computerScore;
+        if (playerScore === 5 || computerScore === 5) {
+          endGame(playerScore, computerScore);
+          return;
+        }
+      }
+
+      function updateRound(roundWinner, roundCount) {
+        divWin.textContent = roundWinner;
+        roundCounter.textContent = "ROUNDS PLAYED: " + roundsPlayed;
+      }
+
+      function endGame(playerScore, computerScore) {
+        if (playerScore === 5) {
+          divEnd.textContent = "Player Wins it All";
+        } else if (computerScore === 5) {
+          divEnd.textContent = "Computer Wins it All";
+        }
+        let resetButt = document.createElement("button");
+        resetButt.textContent = "Play Again!";
+        divEnd.appendChild(resetButt);
+
+        resetButt.addEventListener("click", () => {
+          resetGame();
+        });
+      }
+
+      function resetGame() {
+        divEnd.remove();
+        playerScore = 0;
+        computerScore = 0;
+        playerScoreboard.textContent = "0";
+        computerScoreboard.textContent = "0";
+        playerChoice.textContent = "";
+        computerChoice.textContent = "";
+        divWin.textContent = "CLICK TO BEGIN";
+      }
+
+      rock.addEventListener("click", () => {
+        whenClicked("rock");
+      });
+      paper.addEventListener("click", () => {
+        whenClicked("paper");
+      });
+      scissors.addEventListener("click", () => {
+        whenClicked("scissors");
+      });
+    </script>
   </body>
 </html>
