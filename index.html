@@ -8,25 +8,35 @@
     <title>Rock, Paper, Snip!</title>
   </head>
   <body>
-    <div class="score" id="scoreboard">SCORE
-    <div class="score" id="playerScoreboard">Player: 0</div>
-    <div class="score" id="computerScoreboard">Comp: 0</div>
+    <div class="board">
+      <div class="player">
+        <div class="score" id="playerScoreboard">0</div>
+        <div class="name" id="namePlayer">PLAYER</div>
+        <div class="selection" id="playerSelection"></div>
+      </div>
+
+      <div class="computer">
+        <div class="score" id="computerScoreboard">0</div>
+        <div class="name" id="nameComputer">COMPUTER</div>
+        <div class="selection" id="computerSelection"></div>
+      </div>
     </div>
-    <div class="selection" id="selections">SELECTIONS
-    <div class="selection" id="playerSelection">Player: </div>
-    <div class="selection" id="computerSelection">Comp: </div>
+
+    <div class="winner">CLICK TO BEGIN</div>
+    <div class="roundCount">ROUNDS PLAYED: 0</div>
+
+    <div class="button-box">
+      <img src="./img/rps_rock.jpg" class="button rock" alt="rock">
+      <img src="./img/rps_paper.jpg" class="button paper" alt="paper">
+      <img src="./img/rps_scissors.jpg" class="button scissors" alt="scissors">
     </div>
-    <div class="winner">Click to Begin!</div>
-    
-    <button class="button rock">ROCK</button>
-    <button class="button paper">PAPER</button>
-    <button class="button scissors">SCISSORS</button>
 
     <div class="end"></div>
 
     <script>
       let playerScore = 0;
       let computerScore = 0;
+      let roundsPlayed = 0
       let roundWinner = "";
 
       function randomSelection() {
@@ -37,32 +47,33 @@
 
       function playRound(playerSelection, computerSelection) {
         if (playerSelection === computerSelection) {
-          roundWinner = "Draw!";
+          roundWinner = "DRAW!";
         } else if (playerSelection === "rock") {
           if (computerSelection === "scissors") {
             playerScore++;
-            roundWinner = "Player Wins";
+            roundWinner = "PLAYER WINS";
           } else {
             computerScore++;
-            roundWinner = "Computer Wins";
+            roundWinner = "COMPUTER WINS";
           }
         } else if (playerSelection === "scissors") {
           if (computerSelection === "paper") {
             playerScore++;
-            roundWinner = "Player Wins";
+            roundWinner = "PLAYER WINS";
           } else {
             computerScore++;
-            roundWinner = "Computer Wins";
+            roundWinner = "COMPUTER WINS";
           }
         } else if (playerSelection === "paper") {
           if (computerSelection === "rock") {
             playerScore++;
-            roundWinner = "Player Wins";
+            roundWinner = "PLAYER WINS";
           } else {
             computerScore++;
-            roundWinner = "Computer Wins";
+            roundWinner = "COMPUTER WINS";
           }
         }
+        roundsPlayed++;
       }
 
       let rock = document.querySelector(".rock");
@@ -75,38 +86,67 @@
       let computerChoice = document.querySelector("#computerSelection");
       let playerScoreboard = document.querySelector("#playerScoreboard");
       let computerScoreboard = document.querySelector("#computerScoreboard");
+      let roundCounter = document.querySelector(".roundCount");
+
+      /*let picRock = document.createElement("img");
+      picRock.src = "./img/rps_rock.jpg";*/
 
       function whenClicked(playerSelection) {
         if (playerScore === 5 || computerScore === 5) {
-          endGame(playerScore, computerScore);
           return;
         }
         let computerSelection = randomSelection();
         playRound(playerSelection, computerSelection);
         updateScores(playerScore, computerScore);
         updateSelections(playerSelection, computerSelection);
-        updateRound(roundWinner);
+        updateRound(roundWinner, roundsPlayed);
       }
 
       function updateSelections(playerSelection, computerSelection) {
-        playerChoice.textContent = "Player: " + playerSelection;
-        computerChoice.textContent = "Comp: " + computerSelection;
+        switch (playerSelection) {
+          case "rock":
+            playerChoice.textContent = "ROCK"
+            break;
+          case "paper":
+            playerChoice.textContent = "PAPER";
+            break;
+          case "scissors":
+            playerChoice.textContent = "SCISSORS";
+            break;
+        }
+
+        switch (computerSelection) {
+          case "rock":
+            computerChoice.textContent = "ROCK";
+            break;
+          case "paper":
+            computerChoice.textContent = "PAPER";
+            break;
+          case "scissors":
+            computerChoice.textContent = "SCISSORS";
+            break;
+        }
       }
 
-      function updateScores(playerScore, computerScore) {
-        playerScoreboard.textContent = "Player: " + playerScore;
-        computerScoreboard.textContent = "Comp: " + computerScore;
+      function updateScores(playerScore, computerScore) {        
+        playerScoreboard.textContent = playerScore;
+        computerScoreboard.textContent = computerScore;
+        if (playerScore === 5 || computerScore === 5) {
+          endGame(playerScore, computerScore);
+          return;
+        }
       }
 
-      function updateRound(roundWinner) {
+      function updateRound(roundWinner, roundCount) {
         divWin.textContent = roundWinner;
+        roundCounter.textContent = "ROUNDS PLAYED: " + roundsPlayed;
       }
 
       function endGame(playerScore, computerScore) {
         if (playerScore === 5) {
-          divEnd.textContent = "Player Wins All";
+          divEnd.textContent = "Player Wins it All";
         } else if (computerScore === 5) {
-          divEnd.textContent = "Computer Wins All";
+          divEnd.textContent = "Computer Wins it All";
         }
         let resetButt = document.createElement("button");
         resetButt.textContent = "Play Again!";
@@ -118,13 +158,14 @@
       }
 
       function resetGame() {
-        divEnd.remove();        
+        divEnd.remove();
         playerScore = 0;
         computerScore = 0;
-        playerScoreboard.textContent = "Player: 0";
-        computerScoreboard.textContent = "Comp: 0";
-        playerChoice.textContent = "Player: ";
-        computerChoice.textContent = "Comp: ";
+        playerScoreboard.textContent = "0";
+        computerScoreboard.textContent = "0";
+        playerChoice.textContent = "";
+        computerChoice.textContent = "";
+        divWin.textContent = "CLICK TO BEGIN";
       }
 
       rock.addEventListener("click", () => {
